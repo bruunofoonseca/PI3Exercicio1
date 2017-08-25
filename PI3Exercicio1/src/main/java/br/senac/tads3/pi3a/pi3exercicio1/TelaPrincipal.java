@@ -35,6 +35,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setText("Consultar Produto");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cadastrar Produto");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -84,6 +89,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
        telaCadastro.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    TelaPesquisar telaPesquisa = new TelaPesquisar();
+    telaPesquisa.setLocationRelativeTo(null);
+    telaPesquisa.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
