@@ -5,6 +5,7 @@
  */
 package br.senac.tads3.pi3a.pi3exercicio1;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -84,6 +85,11 @@ public class TelaCadastrar extends javax.swing.JFrame {
         jLabel7.setText("Valor Venda:");
 
         botaoLocalizar.setText("Localizar");
+        botaoLocalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoLocalizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,29 +184,12 @@ public class TelaCadastrar extends javax.swing.JFrame {
 
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
         ProdutoModel produto = new ProdutoModel();
-        String nome, descricao, categorias;
-        double valorCompra = 0.00d, valorVenda = 0.00d;
-        Date dataAtual;
-
-        nome = campoNome.getText();
-        descricao = campoDescricao.getText();
-        categorias = campoCategorias.getText();
-        try {
-            valorCompra = Double.parseDouble(campoCompra.getText());
-        } catch (Exception e) {
-        }
-        try {
-            valorVenda = Double.parseDouble(campoVenda.getText());
-        } catch (Exception e) {
-        }
-        Date data = new Date(System.currentTimeMillis());
-
-        produto.setNome(nome);
-        produto.setDescricao(descricao);
-        produto.setCategorias(categorias);
-        produto.setCompra(valorCompra);
-        produto.setVenda(valorVenda);
-        produto.setData(data);
+        
+        produto.setNome(campoNome.getText());
+        produto.setDescricao(campoDescricao.getText());
+        produto.setValorCompra(BigDecimal.valueOf(Double.valueOf(campoCompra.getText())));
+        produto.setValorVenda(BigDecimal.valueOf(Double.valueOf(campoVenda.getText())));
+        produto.setCategorias(campoCategorias.getText());
         
         try{
             ProdutoService.inserirProduto(produto);
@@ -212,12 +201,19 @@ public class TelaCadastrar extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, "Produto inserido com sucesso",
                 "Cadastro efetuado", JOptionPane.INFORMATION_MESSAGE);
         
-        campoNome.setText(null);
+        /*campoNome.setText(null);
         campoDescricao.setText(null);
         campoCategorias.setText(null);
         campoCompra.setText(null);
-        campoVenda.setText(null);
+        campoVenda.setText(null);*/
     }//GEN-LAST:event_botaoCadastrarActionPerformed
+
+    private void botaoLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLocalizarActionPerformed
+        TelaPesquisa telaPesquisa = new TelaPesquisa();
+        telaPesquisa.setLocationRelativeTo(null);
+        telaPesquisa.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botaoLocalizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,7 +245,10 @@ public class TelaCadastrar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaCadastrar().setVisible(true);
+                TelaCadastrar telaCadastro = new TelaCadastrar();
+                telaCadastro.setLocationRelativeTo(null);
+                telaCadastro.setVisible(true);
+                
             }
         });
     }

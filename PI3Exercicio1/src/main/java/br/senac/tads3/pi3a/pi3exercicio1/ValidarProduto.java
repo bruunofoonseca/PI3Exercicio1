@@ -19,15 +19,15 @@ public class ValidarProduto {
             throw new ProdutoException("Não foi informado Categoria do produto");
         }
         
-        if(prod.getCompra() == 0){
+        if(prod.getValorCompra() == null || "".equals(prod.getValorCompra())){
             throw new ProdutoException("Não foi informado Valor de Compra do produto");
         }
         
-        if(prod.getVenda() == 0){
+        if(prod.getValorVenda() == null || "".equals(prod.getValorCompra())){
             throw new ProdutoException("Não foi informado Valor de Venda do produto");
         }
         
-        if(prod.getDescricao()== null || "".equals(prod.getDescricao())){
+        if(prod.getDescricao() == null || "".equalsIgnoreCase(prod.getDescricao())){
            throw new ProdutoException("Não foi informado Descrição do produto");
         }
     }

@@ -7,38 +7,39 @@ package br.senac.tads3.pi3a.pi3exercicio1;
 
 import java.util.List;
 
+
 /**
  *
  * @author BruunoFoonseca
  */
 public class ProdutoService {
     // Inserir produto
-    public static void inserirProduto(ProdutoModel prod)
+    public static void inserirProduto(ProdutoModel produto)
             throws ProdutoException, DataSourceException {
 
         // estou validando se houve algum erro no objeto ProdutoModel
-        ValidarProduto.validar(prod);
+        ValidarProduto.validar(produto);
 
         try {
             //Chama Função do DB
-            DBProduto.inserir(prod);
+            DBProduto.inserirProduto(produto);
         } catch (Exception e) {
             
             throw new DataSourceException("Erro na fonte de dados", e);
         }
     }
     
-    public static void atualizarProduto(ProdutoModel prod)
+    /*public static void atualizarProduto(ProdutoModel prod)
     throws ProdutoException, DataSourceException{
         try {
             //Chama função do BD
-            DBProduto.atualiza(prod);
+            DBProduto.atualizarProduto(prod);
         } catch (Exception e) {
             // imprimir erro tecnico no console
             throw new DataSourceException("Erro na fonte de dados", e);
         }
     }
-    
+    */
     public static List<ProdutoModel> localizarProduto(String nomeProd)
                 throws ProdutoException, DataSourceException{
         try {
@@ -46,11 +47,10 @@ public class ProdutoService {
             // caso tenha algo digitado traz resultado
             if (nomeProd == null || "".equals(nomeProd)) {
                 //Chama função do DB
-                return DBProduto.listarTodosProdutos();
-            } else {
-                //Chama função do DB
+                return DBProduto.listar();
+            }else{
                 return DBProduto.listarSomentePalavra(nomeProd);
-            }
+            } 
         } catch (Exception e) {
             throw new DataSourceException("Erro na fonte de dados, e");
         }
@@ -68,7 +68,7 @@ public class ProdutoService {
     }
 
     // excluir produto
-    public static void excluirProduto(Integer id) throws ProdutoException, DataSourceException{
+    public static void excluirProduto(long id) throws ProdutoException, DataSourceException{
         
         try {
             //Chama Função do DB
@@ -79,5 +79,18 @@ public class ProdutoService {
             e.printStackTrace();
             throw new DataSourceException("Erro na fonte de dados", e);
         }   
-    }       
-}
+    }   
+    
+    public static long obterId(String nomeDoProduto)throws ProdutoException, DataSourceException{
+        
+        try {
+            //Chama Função do DB
+            return DBProduto.retornaId(nomeDoProduto);
+        } catch (Exception e) {
+            
+            // imprimir algum erro caso não consiga excluir
+            e.printStackTrace();
+            throw new DataSourceException("Erro na fonte de dados", e);
+        }   
+    }
+}  

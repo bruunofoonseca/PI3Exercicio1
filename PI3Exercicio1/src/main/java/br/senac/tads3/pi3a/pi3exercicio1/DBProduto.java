@@ -5,56 +5,151 @@
  */
 package br.senac.tads3.pi3a.pi3exercicio1;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 /**
  *
  * @author BruunoFoonseca
  */
-public class DBProduto {
-    private static int numProdutos = 0;
+public class DBProduto extends ConexaoDB{
     
-    private static final List<ProdutoModel> listaProdutos = new ArrayList<>();
     
-    // Inserindo Produto
-    public static void inserir(ProdutoModel prod)
-        throws Exception{
-        
-        prod.setID(numProdutos++);
-        listaProdutos.add(prod);
+    
+public static List<ProdutoModel> listar() {
+
+    String query = "SELECT id, nome, descricao, "
+	    + "vl_compra, vl_venda, categoria, "
+	    + "dt_cadastro FROM produto";
+
+    List<ProdutoModel> lista = null;
+    try (Connection conn = obterConexao();
+	    PreparedStatement stmt = conn.prepareStatement(query);
+	    ResultSet resultados = stmt.executeQuery()) {
+
+      lista = new ArrayList<ProdutoModel>();
+      while (resultados.next()) {
+	ProdutoModel p = new ProdutoModel();
+	p.setId(resultados.getLong("id"));
+	p.setNome(resultados.getString("nome"));
+	p.setDescricao(resultados.getString("descricao"));
+	p.setValorCompra(resultados.getBigDecimal("vl_compra"));
+	p.setValorVenda(resultados.getBigDecimal("vl_venda"));
+	p.setDescricao(resultados.getString("categoria"));
+	p.setDtCadastro(resultados.getTimestamp("dt_cadastro"));
+	lista.add(p);
+      }
+    } catch (SQLException ex) {
+      System.err.println(ex.getMessage());
+    } catch (ClassNotFoundException ex) {
+      System.err.println(ex.getMessage());
+    }
+    return lista;
+   }
+
+ public static ProdutoModel obter(long id) {
+    String query = "SELECT id, nome, descricao, "
+	    + "vl_compra, vl_venda, categoria, "
+	    + "dt_cadastro FROM produto "
+	    + "WHERE id = ?";
+
+    ProdutoModel prod = null;
+    try (Connection conn = obterConexao();
+	    PreparedStatement stmt = conn.prepareStatement(query)) {
+
+      stmt.setLong(1, id);
+      try (ResultSet resultados = stmt.executeQuery()) {
+
+	if (resultados.next()) {
+	  prod = new ProdutoModel();
+	  prod.setId(resultados.getLong("id"));
+	  prod.setNome(resultados.getString("nome"));
+	  prod.setDescricao(resultados.getString("descricao"));
+	  prod.setValorCompra(resultados.getBigDecimal("vl_compra"));
+	  prod.setValorVenda(resultados.getBigDecimal("vl_venda"));
+	  prod.setDescricao(resultados.getString("categoria"));
+	  prod.setDtCadastro(resultados.getTimestamp("dt_cadastro"));
+	}
+      }
+    } catch (SQLException ex) {
+      System.err.println(ex.getMessage());
+    } catch (ClassNotFoundException ex) {
+      System.err.println(ex.getMessage());
+    }
+    return prod;
+  }
+ 
+   public static void excluir(long id){
+     
+     
+      String query = "DELETE FROM PRODUTO WHERE ID = ?";
+      
+      try (Connection conn = obterConexao()){
+              PreparedStatement stmt = conn.prepareStatement(query);
+              stmt.setLong(1, id);
+              int contadorDeExclusao = stmt.executeUpdate();
+      }      
+      
+      catch(SQLException ex){
+              System.err.println(ex.getMessage());
+              }
+      catch (ClassNotFoundException ex){
+              System.err.println(ex.getMessage());
+              }
+          
+      }
+      
+     public static void inserirProduto(ProdutoModel p) {
+
+    String query = "INSERT INTO produto (nome, descricao, vl_compra, vl_venda, categoria, dt_cadastro) VALUES (?, ?, ?, ?, ?, ?)";
+
+    try (Connection conn = obterConexao()) {
+      conn.setAutoCommit(false); // Permite usar transacoes para multiplos comandos no banco de dados
+      try (PreparedStatement stmt
+	      = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+	stmt.setString(1, p.getNome());
+	stmt.setString(2, p.getDescricao());
+	stmt.setBigDecimal(3, p.getValorCompra());
+	stmt.setBigDecimal(4, p.getValorVenda());
+	stmt.setString(5, p.getCategorias());
+	stmt.setTimestamp(6, new java.sql.Timestamp(System.currentTimeMillis()));
+
+	stmt.executeUpdate();
+
+	// ResultSet para recuperar o ID gerado automaticamente no banco de dados.
+	// Neste exemplo, o ID é gerado automaticamente.
+	try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	  if (generatedKeys.next()) {
+	    long idNovo = generatedKeys.getLong(1);
+	    p.setId(idNovo);
+	    System.out.println("***** ID NOVO CADASTRADO: " + String.valueOf(idNovo));
+
+	    // Executar próximos INSERTs USANDO O ID novo.
+	  }
+
+	}
+	conn.commit();
+      } catch (SQLException ex) {
+	conn.rollback();
+	System.err.println(ex.getMessage());
+      }
+
+    } catch (SQLException ex) {
+      System.err.println(ex.getMessage());
+    } catch (ClassNotFoundException ex) {
+      System.err.println(ex.getMessage());
     }
 
-    // realiza a atualização do produto , com id e dados
-    public static void atualiza(ProdutoModel produtoProcura)
-            throws Exception{
-        
-        if(produtoProcura != null && !listaProdutos.isEmpty()){
-            for(ProdutoModel produtoLi : listaProdutos){
-                if (produtoLi != null && Objects.equals(produtoLi.getID(), produtoProcura.getID())){
-                    produtoLi.setNome(produtoProcura.getNome());
-                    produtoLi.setDescricao(produtoProcura.getDescricao());
-                    produtoLi.setData(produtoProcura.getData());
-                    produtoLi.setVenda(produtoProcura.getVenda());
-                    produtoLi.setCompra(produtoProcura.getCompra());
-                    produtoLi.setCategorias(produtoProcura.getCategorias());
-                    break;
-                }
-            }
-        }
-    }
-
-    // Localizar ou listar todos os Produto
-    public static List<ProdutoModel> listarTodosProdutos()
-            throws Exception{
-        // ira retorna a lista do objeto produto
-        return listaProdutos;
-    }
-
+  }
     public static List<ProdutoModel> listarSomentePalavra(String valor)
         throws Exception {
-
+        List<ProdutoModel> listaProdutos = listar();
         List<ProdutoModel> listaResultadoProdutos = new ArrayList<>();
         
         if(valor != null && !listaProdutos.isEmpty()){
@@ -72,30 +167,23 @@ public class DBProduto {
         return listaResultadoProdutos;
     }
     
-    public static ProdutoModel obter(Integer id)
-        throws Exception{
+    public static long retornaId(String nomeDoProduto)throws Exception {
+        long id = 0;
+        List<ProdutoModel> listaProdutos = listar();
         
-        if(id != null && ! listaProdutos.isEmpty()){
-            for (int i = 0; i < listaProdutos.size(); i++) {
-                if(listaProdutos.get(i) != null && Objects.equals(listaProdutos.get(i).getID(), id)){
-                    return listaProdutos.get(i);
+        
+        if(nomeDoProduto != null && !listaProdutos.isEmpty()){
+            
+            for (ProdutoModel prodLista : listaProdutos){
+                if(prodLista != null && prodLista.getNome() != null){
+                    if(prodLista.getNome().toUpperCase().contains(nomeDoProduto.toUpperCase())){
+                       id = prodLista.getId();
+                    }
                 }
             }
+            
         }
         
-        return null;
+        return id;
     }
-
-    // excluir
-    public static void excluir(Integer id) throws Exception {
-        if(id != null && !listaProdutos.isEmpty()){
-            for(int i = 0; i < listaProdutos.size(); i++){
-                ProdutoModel prod = listaProdutos.get(i);
-                if(prod != null && Objects.equals(prod.getID(), id)){
-                    listaProdutos.remove(i);
-                    break;
-                }
-            }
-        }
     }
-}

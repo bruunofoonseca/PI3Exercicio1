@@ -53,7 +53,7 @@ public class TelaEditar extends javax.swing.JFrame {
         setTitle("Editar Produto");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Cadastro de Produtos");
+        jLabel1.setText("Edição de Produto");
 
         jLabel2.setText("Nome:");
 
@@ -177,7 +177,7 @@ public class TelaEditar extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
-        ProdutoModel produto = new ProdutoModel();
+       /* ProdutoModel produto = new ProdutoModel();
         String nome, descricao, categorias;
         double valorCompra = 0.00d, valorVenda = 0.00d;
         Date dataAtual;
@@ -216,44 +216,13 @@ public class TelaEditar extends javax.swing.JFrame {
         campoDescricao.setText(null);
         campoCategorias.setText(null);
         campoCompra.setText(null);
-        campoVenda.setText(null);
+        campoVenda.setText(null);*/
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaEditar().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCadastrar;

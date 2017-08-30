@@ -85,8 +85,18 @@ public class TelaPesquisa extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblProdutos);
 
         botaoExcluir.setText("Excluir");
+        botaoExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoExcluirActionPerformed(evt);
+            }
+        });
 
         botaoEditar.setText("Editar");
+        botaoEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -171,6 +181,42 @@ public class TelaPesquisa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botaoLocalizarActionPerformed
 
+    private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
+       TelaEditar telaEditar = new TelaEditar();
+       telaEditar.setLocationRelativeTo(null);
+       telaEditar.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_botaoEditarActionPerformed
+
+    private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
+         if(tblProdutos.getSelectedRow() >= 0){
+            final int row = tblProdutos.getSelectedRow();
+            
+            String nome = (String) tblProdutos.getValueAt(row, 0);
+           
+            long id = 0;
+            
+            try{
+                id = ProdutoService.obterId(nome);
+               }catch(Exception e){
+                   JOptionPane.showMessageDialog(rootPane, e.getMessage(),"Falhou ao obter a busca", JOptionPane.ERROR_MESSAGE);
+               }
+                     
+            int resposta = JOptionPane.showConfirmDialog(rootPane, "Excluir o produto \""+nome+"\"?", "Confirmar exclusão", JOptionPane.YES_OPTION);
+            
+            if(resposta == JOptionPane.YES_OPTION){
+                try{
+                                       
+                    ProdutoService.excluirProduto(id);
+                    this.refreshList();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(rootPane, e.getMessage(), "Falha na exclusão", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_botaoExcluirActionPerformed
+
     // ira atualiza a lista de produtos
     public boolean refreshList() throws ProdutoException, Exception{
         
@@ -191,8 +237,8 @@ public class TelaPesquisa extends javax.swing.JFrame {
                 Object[] row = new Object[4];
                 row[0] = prod.getNome();
                 row[1] = prod.getCategorias();
-                row[2] = prod.getCompra();
-                row[3] = prod.getVenda();
+                row[2] = prod.getValorCompra();
+                row[3] = prod.getValorVenda();
                 modelo.addRow(row);
             }    
         }
@@ -203,37 +249,7 @@ public class TelaPesquisa extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPesquisa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaPesquisa().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEditar;
