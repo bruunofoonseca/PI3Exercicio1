@@ -201,11 +201,11 @@ public class TelaCadastrar extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, "Produto inserido com sucesso",
                 "Cadastro efetuado", JOptionPane.INFORMATION_MESSAGE);
         
-        /*campoNome.setText(null);
+        campoNome.setText(null);
         campoDescricao.setText(null);
         campoCategorias.setText(null);
         campoCompra.setText(null);
-        campoVenda.setText(null);*/
+        campoVenda.setText(null);
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
     private void botaoLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLocalizarActionPerformed

@@ -14,7 +14,8 @@ import java.util.Date;
  */
 
 public class ProdutoModel {
-   private long id;
+    
+  private long id;
 
   private String nome;
 

@@ -7,7 +7,6 @@ package br.senac.tads3.pi3a.pi3exercicio1;
 
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import br.senac.tads3.pi3a.pi3exercicio1.ProdutoService;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +14,8 @@ import javax.swing.JOptionPane;
  * @author diogo.sfelix
  */
 public class TelaPesquisa extends javax.swing.JFrame {
+    
+    
     
     public TelaPesquisa() {
         initComponents();
@@ -182,10 +183,24 @@ public class TelaPesquisa extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoLocalizarActionPerformed
 
     private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
-       TelaEditar telaEditar = new TelaEditar();
-       telaEditar.setLocationRelativeTo(null);
-       telaEditar.setVisible(true);
-       this.dispose();
+        long id = 0;
+        
+        if(tblProdutos.getSelectedRow() >= 0){
+            final int row = tblProdutos.getSelectedRow();
+            
+            String nome = (String) tblProdutos.getValueAt(row, 0);
+                  
+            try{
+                id = ProdutoService.obterId(nome);
+               }catch(Exception e){
+                   JOptionPane.showMessageDialog(rootPane, e.getMessage(),"Selecione um produto", JOptionPane.ERROR_MESSAGE);
+               }
+        }
+       
+        TelaEditar telaEditar = new TelaEditar(id);
+        telaEditar.setLocationRelativeTo(null);
+        telaEditar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botaoEditarActionPerformed
 
     private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
@@ -199,7 +214,7 @@ public class TelaPesquisa extends javax.swing.JFrame {
             try{
                 id = ProdutoService.obterId(nome);
                }catch(Exception e){
-                   JOptionPane.showMessageDialog(rootPane, e.getMessage(),"Falhou ao obter a busca", JOptionPane.ERROR_MESSAGE);
+                   JOptionPane.showMessageDialog(rootPane, e.getMessage(),"Selecione um produto", JOptionPane.ERROR_MESSAGE);
                }
                      
             int resposta = JOptionPane.showConfirmDialog(rootPane, "Excluir o produto \""+nome+"\"?", "Confirmar exclusão", JOptionPane.YES_OPTION);

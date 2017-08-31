@@ -24,9 +24,7 @@ public class DBProduto extends ConexaoDB{
     
 public static List<ProdutoModel> listar() {
 
-    String query = "SELECT id, nome, descricao, "
-	    + "vl_compra, vl_venda, categoria, "
-	    + "dt_cadastro FROM produto";
+    String query = "SELECT id, nome, descricao,vl_compra, vl_venda, categoria,dt_cadastro FROM produto";
 
     List<ProdutoModel> lista = null;
     try (Connection conn = obterConexao();
@@ -41,7 +39,7 @@ public static List<ProdutoModel> listar() {
 	p.setDescricao(resultados.getString("descricao"));
 	p.setValorCompra(resultados.getBigDecimal("vl_compra"));
 	p.setValorVenda(resultados.getBigDecimal("vl_venda"));
-	p.setDescricao(resultados.getString("categoria"));
+	p.setCategorias(resultados.getString("categoria"));
 	p.setDtCadastro(resultados.getTimestamp("dt_cadastro"));
 	lista.add(p);
       }
@@ -73,7 +71,7 @@ public static List<ProdutoModel> listar() {
 	  prod.setDescricao(resultados.getString("descricao"));
 	  prod.setValorCompra(resultados.getBigDecimal("vl_compra"));
 	  prod.setValorVenda(resultados.getBigDecimal("vl_venda"));
-	  prod.setDescricao(resultados.getString("categoria"));
+	  prod.setCategorias(resultados.getString("categoria"));
 	  prod.setDtCadastro(resultados.getTimestamp("dt_cadastro"));
 	}
       }
@@ -104,6 +102,34 @@ public static List<ProdutoModel> listar() {
               }
           
       }
+   public static void alterarProduto(long id){
+              ProdutoModel p = obter(id);
+       
+              String identification = Long.toString(id);
+       
+       String query = "UPDATE PRODUTO SET  NOME = ?, DESCRICAO = ?, VL_COMPRA = ?, VL_VENDA = ?, CATEGORIA = ?, DT_CADASTRO = ? WHERE ID = ?";
+       
+       try (Connection conn = obterConexao()){
+              PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, p.getNome());
+                stmt.setString(2, p.getDescricao());
+                stmt.setBigDecimal(3, p.getValorCompra());
+                stmt.setBigDecimal(4, p.getValorVenda());
+                stmt.setString(5, p.getCategorias());
+                stmt.setTimestamp(6, new java.sql.Timestamp(System.currentTimeMillis()));
+                stmt.setString(7, identification);
+              int contadorDeColunasAfetadas = stmt.executeUpdate();
+      }      
+      
+      catch(SQLException ex){
+              System.err.println(ex.getMessage());
+              }
+      catch (ClassNotFoundException ex){
+              System.err.println(ex.getMessage());
+              }
+          
+   
+   }
       
      public static void inserirProduto(ProdutoModel p) {
 

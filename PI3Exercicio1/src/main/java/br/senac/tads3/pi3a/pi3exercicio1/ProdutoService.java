@@ -56,7 +56,7 @@ public class ProdutoService {
         }
     }
     
-    public static ProdutoModel obterProduto (Integer id)
+    public static ProdutoModel obterProduto (long id)
         throws ProdutoException, DataSourceException {
             
         try {
@@ -92,5 +92,17 @@ public class ProdutoService {
             e.printStackTrace();
             throw new DataSourceException("Erro na fonte de dados", e);
         }   
+    }
+    
+    public static void alterarProduto(long id) throws ProdutoException, DataSourceException{
+        try {
+            //Chama Função do DB
+            DBProduto.alterarProduto(id);
+        } catch (Exception e) {
+            
+            // imprimir algum erro caso não consiga excluir
+            e.printStackTrace();
+            throw new DataSourceException("Erro na fonte de dados", e);
+        } 
     }
 }  

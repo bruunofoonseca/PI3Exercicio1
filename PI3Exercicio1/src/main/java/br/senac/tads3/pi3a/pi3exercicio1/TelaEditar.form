@@ -176,7 +176,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastrar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cadastrar"/>
+            <Property name="text" type="java.lang.String" value="Alterar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastrarActionPerformed"/>
@@ -203,6 +203,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Localizar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoLocalizarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
