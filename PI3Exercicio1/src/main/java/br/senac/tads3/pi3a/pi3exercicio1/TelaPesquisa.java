@@ -8,6 +8,8 @@ package br.senac.tads3.pi3a.pi3exercicio1;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import br.senac.tads3.pi3a.pi3exercicio1.ProdutoService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -182,10 +184,30 @@ public class TelaPesquisa extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoLocalizarActionPerformed
 
     private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
-       TelaEditar telaEditar = new TelaEditar();
-       telaEditar.setLocationRelativeTo(null);
-       telaEditar.setVisible(true);
-       this.dispose();
+        final int row = tblProdutos.getSelectedRow();
+        String nome = (String) tblProdutos.getValueAt(row, 0);
+        int id = 0;
+        try {
+            id = (int) ProdutoService.obterId(nome);
+        } catch (ProdutoException ex) {
+            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DataSourceException ex) {
+            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        ProdutoModel prod = null;
+        try {
+            prod = ProdutoService.obterProduto(id);
+        } catch (ProdutoException ex) {
+            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DataSourceException ex) {
+            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        TelaEditar telaEditar = new TelaEditar();
+        telaEditar.setProduto(prod);
+        telaEditar.setLocationRelativeTo(null);
+        telaEditar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botaoEditarActionPerformed
 
     private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed

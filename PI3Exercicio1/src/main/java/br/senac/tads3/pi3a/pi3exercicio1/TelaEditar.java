@@ -19,6 +19,8 @@ public class TelaEditar extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadastrar
      */
+    
+    public ProdutoModel produto = new ProdutoModel();
     public TelaEditar() {
         initComponents();
     }
@@ -176,6 +178,11 @@ public class TelaEditar extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
+    public void setProduto(ProdutoModel prod) {
+        this.produto = prod;
+        
+    }
+    
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
        /* ProdutoModel produto = new ProdutoModel();
         String nome, descricao, categorias;
