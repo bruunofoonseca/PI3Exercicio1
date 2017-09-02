@@ -5,6 +5,7 @@
  */
 package br.senac.tads3.pi3a.pi3exercicio1;
 
+import br.senac.tads.pi3a.pi3exercicio1.bd.DBProduto;
 import java.util.List;
 
 
@@ -28,18 +29,7 @@ public class ProdutoService {
             throw new DataSourceException("Erro na fonte de dados", e);
         }
     }
-    
-    /*public static void atualizarProduto(ProdutoModel prod)
-    throws ProdutoException, DataSourceException{
-        try {
-            //Chama função do BD
-            DBProduto.atualizarProduto(prod);
-        } catch (Exception e) {
-            // imprimir erro tecnico no console
-            throw new DataSourceException("Erro na fonte de dados", e);
-        }
-    }
-    */
+
     public static List<ProdutoModel> localizarProduto(String nomeProd)
                 throws ProdutoException, DataSourceException{
         try {
@@ -56,7 +46,7 @@ public class ProdutoService {
         }
     }
     
-    public static ProdutoModel obterProduto (Integer id)
+    public static ProdutoModel obterProduto (int id)
         throws ProdutoException, DataSourceException {
             
         try {
@@ -68,7 +58,7 @@ public class ProdutoService {
     }
 
     // excluir produto
-    public static void excluirProduto(long id) throws ProdutoException, DataSourceException{
+    public static void excluirProduto(int id) throws ProdutoException, DataSourceException{
         
         try {
             //Chama Função do DB
@@ -92,5 +82,18 @@ public class ProdutoService {
             e.printStackTrace();
             throw new DataSourceException("Erro na fonte de dados", e);
         }   
+    }
+    
+    public static void alterarProduto(ProdutoModel prod) 
+            throws ProdutoException, DataSourceException{
+        try {
+            //Chama Função do DB
+            DBProduto.alterarProduto(prod);
+            
+        } catch (Exception e) {
+            // imprimir algum erro caso não consiga excluir
+            e.printStackTrace();
+            throw new DataSourceException("Erro na fonte de dados", e);
+        } 
     }
 }  

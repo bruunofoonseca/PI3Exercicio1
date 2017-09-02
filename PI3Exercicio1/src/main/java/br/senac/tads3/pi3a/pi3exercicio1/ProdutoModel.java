@@ -14,7 +14,8 @@ import java.util.Date;
  */
 
 public class ProdutoModel {
-   private long id;
+    
+  private int id;
 
   private String nome;
 
@@ -32,7 +33,7 @@ public class ProdutoModel {
     
   }
 
-  public ProdutoModel(long id, String nome, String descricao, BigDecimal valorCompra, BigDecimal valorVenda, String categorias, Date dtCadastro) {
+  public ProdutoModel(int id, String nome, String descricao, BigDecimal valorCompra, BigDecimal valorVenda, String categorias, Date dtCadastro) {
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;
@@ -51,11 +52,11 @@ public class ProdutoModel {
     this.dtCadastro = dtCadastro;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 

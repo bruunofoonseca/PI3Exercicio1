@@ -78,10 +78,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="botaoCancelar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                          <Component id="botaoLocalizar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="botaoCadastrar" min="-2" max="-2" attributes="0"/>
+                          <Component id="botaoSalvar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -117,9 +115,8 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="botaoCadastrar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="botaoSalvar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="botaoCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="botaoLocalizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -174,12 +171,12 @@
             <Property name="text" type="java.lang.String" value="Categorias:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="botaoCadastrar">
+        <Component class="javax.swing.JButton" name="botaoSalvar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cadastrar"/>
+            <Property name="text" type="java.lang.String" value="Alterar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastrarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoSalvarActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCancelar">
@@ -198,11 +195,6 @@
         <Component class="javax.swing.JTextField" name="campoCompra">
         </Component>
         <Component class="javax.swing.JTextField" name="campoVenda">
-        </Component>
-        <Component class="javax.swing.JButton" name="botaoLocalizar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Localizar"/>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>

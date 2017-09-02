@@ -5,18 +5,24 @@
  */
 package br.senac.tads3.pi3a.pi3exercicio1;
 
+import java.awt.Dimension;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.table.DefaultTableModel;
-import br.senac.tads3.pi3a.pi3exercicio1.ProdutoService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author diogo.sfelix
  */
-public class TelaPesquisa extends javax.swing.JFrame {
+public class TelaPesquisa extends JFrame {
+    
+    TelaEditar formEditarProduto = new TelaEditar();
+    
+    // pega o ultimo resultado
+    String ultimaPesq = null;
+    List<ProdutoModel> resultado;
     
     public TelaPesquisa() {
         initComponents();
@@ -25,9 +31,7 @@ public class TelaPesquisa extends javax.swing.JFrame {
         modelo.setRowCount(0);
     }
     
-    // pega o ultimo resultado
-    String ultimaPesq = null;
-    List<ProdutoModel> resultado;
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -184,59 +188,71 @@ public class TelaPesquisa extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoLocalizarActionPerformed
 
     private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
-        final int row = tblProdutos.getSelectedRow();
-        String nome = (String) tblProdutos.getValueAt(row, 0);
-        int id = 0;
+
         try {
-            id = (int) ProdutoService.obterId(nome);
-        } catch (ProdutoException ex) {
-            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DataSourceException ex) {
-            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            // obtem a linha selecionada na tabela
+            final int row = tblProdutos.getSelectedRow();
             
-        ProdutoModel prod = null;
-        try {
-            prod = ProdutoService.obterProduto(id);
-        } catch (ProdutoException ex) {
-            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DataSourceException ex) {
-            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+            // verifica se ha linha selecionada
+            if(row >= 0){
+                // obtem a linha selecionada na tabela
+                int id = resultado.get(row).getId();
+                
+                //solicita ao services obter o produto
+                ProdutoModel produto = ProdutoService.obterProduto(id);
+                
+                formEditarProduto.dispose();
+                formEditarProduto = new TelaEditar();
+                formEditarProduto.setProduto(produto);
+                formEditarProduto.setTitle(produto.getNome());
+                formEditarProduto.setVisible(true);
+                formEditarProduto.setLocationRelativeTo(null);
+                formEditarProduto.toFront();
+            }
+            
+        } catch (Exception e) {
+            // se ocorrer algum erro tecnico mostra no console
+            e.printStackTrace();
+            // exibe mensagem de erro generica para usuario
+            JOptionPane.showMessageDialog(rootPane, "Não é possivel" 
+                    + " exibir os dados do produto", 
+                    "Erro ao abrir detalhes",JOptionPane.ERROR_MESSAGE);
         }
-        TelaEditar telaEditar = new TelaEditar();
-        telaEditar.setProduto(prod);
-        telaEditar.setLocationRelativeTo(null);
-        telaEditar.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_botaoEditarActionPerformed
 
     private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
-         if(tblProdutos.getSelectedRow() >= 0){
+         
+        if(tblProdutos.getSelectedRow() >= 0){
+            // obtem a linha do produto selecionado
             final int row = tblProdutos.getSelectedRow();
             
-            String nome = (String) tblProdutos.getValueAt(row, 0);
+            // obtem o nome do produto, para pedir a confirmação exclusao
+            String nome = (String) tblProdutos.getValueAt(row, 1);
            
-            long id = 0;
+            // exibindo caixa de dialogo, solicitando ação
+            int resposta = JOptionPane.showConfirmDialog(rootPane, "Confirmar Exclusão", "Excluir Produto", JOptionPane.YES_NO_OPTION);
             
-            try{
-                id = ProdutoService.obterId(nome);
-               }catch(Exception e){
-                   JOptionPane.showMessageDialog(rootPane, e.getMessage(),"Falhou ao obter a busca", JOptionPane.ERROR_MESSAGE);
-               }
-                     
-            int resposta = JOptionPane.showConfirmDialog(rootPane, "Excluir o produto \""+nome+"\"?", "Confirmar exclusão", JOptionPane.YES_OPTION);
-            
+            // verificando a resposta do usuario
             if(resposta == JOptionPane.YES_OPTION){
-                try{
-                                       
+                try {
+                    // obter o id do roduto
+                    int id = resultado.get(row).getId();
+                    
+                    // chama a classe serviço para excluir o item
                     ProdutoService.excluirProduto(id);
                     this.refreshList();
-                }catch (Exception e){
+                    
+                } catch (Exception e) {
+                    // se ocorre erro, mostra no console o erro,
+                    // esconde do usuario
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(rootPane, e.getMessage(), "Falha na exclusão", JOptionPane.ERROR_MESSAGE);
+                    // exibi mensagem de erro ao usuario
+                    JOptionPane.showConfirmDialog(rootPane, e.getMessage(), "Falha na exclusão", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        }// TODO add your handling code here:
+                
+        }  
     }//GEN-LAST:event_botaoExcluirActionPerformed
 
     // ira atualiza a lista de produtos
@@ -268,6 +284,15 @@ public class TelaPesquisa extends javax.swing.JFrame {
         return true;
     }
     
+    // abre um internal frame centralizado na tela
+     public void openFrameInCenter(JInternalFrame jif){
+        Dimension desktopSize = this.getParent().getSize();
+        Dimension jInternalFrameSize = jif.getSize();
+        int width = (desktopSize.width - jInternalFrameSize.width) / 2;
+        int height = (desktopSize.height - jInternalFrameSize.height) / 2;
+        jif.setLocation(width, height);
+        jif.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */

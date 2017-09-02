@@ -1,0 +1,3 @@
+Nome do Banco de Dados: exercicio 
+Usuário: app
+Senha: app

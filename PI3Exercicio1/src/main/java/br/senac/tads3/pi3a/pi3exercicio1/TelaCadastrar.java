@@ -6,16 +6,14 @@
 package br.senac.tads3.pi3a.pi3exercicio1;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Biel
  */
-public class TelaCadastrar extends javax.swing.JFrame {
+public class TelaCadastrar extends JFrame {
 
     /**
      * Creates new form TelaCadastrar
@@ -193,31 +191,36 @@ public class TelaCadastrar extends javax.swing.JFrame {
         
         try{
             ProdutoService.inserirProduto(produto);
+            
         }catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, e.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
         JOptionPane.showMessageDialog(rootPane, "Produto inserido com sucesso",
                 "Cadastro efetuado", JOptionPane.INFORMATION_MESSAGE);
         
-        /*campoNome.setText(null);
+        campoNome.setText(null);
         campoDescricao.setText(null);
         campoCategorias.setText(null);
+        campoVenda.setText(null);
         campoCompra.setText(null);
-        campoVenda.setText(null);*/
+        
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
     private void botaoLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLocalizarActionPerformed
-        TelaPesquisa telaPesquisa = new TelaPesquisa();
-        telaPesquisa.setLocationRelativeTo(null);
+        TelaPesquisa telaPesquisa = new TelaPesquisa();      
         telaPesquisa.setVisible(true);
+        telaPesquisa.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_botaoLocalizarActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
